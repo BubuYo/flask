@@ -27,6 +27,21 @@ For example, to run a Flask application with 4 worker processes (``-w
 .. _eventlet: http://eventlet.net/
 .. _greenlet: https://greenlet.readthedocs.io/en/latest/
 
+uWSGI
+--------
+
+`uWSGI`_ is a fast application server written in C. It is very configurable
+which makes it more complicated to setup than gunicorn.
+
+Running `uWSGI HTTP Router`_::
+
+    uwsgi --http 127.0.0.1:5000 --module myproject:app
+
+For a more optimized setup, see :ref:`configuring uWSGI and NGINX <deploying-uwsgi>`.
+
+.. _uWSGI: http://uwsgi-docs.readthedocs.io/en/latest/
+.. _uWSGI HTTP Router: http://uwsgi-docs.readthedocs.io/en/latest/HTTP.html#the-uwsgi-http-https-router
+
 Gevent
 -------
 
@@ -34,7 +49,7 @@ Gevent
 `greenlet`_ to provide a high-level synchronous API on top of `libev`_
 event loop::
 
-    from gevent.wsgi import WSGIServer
+    from gevent.pywsgi import WSGIServer
     from yourapplication import app
 
     http_server = WSGIServer(('', 5000), app)
@@ -62,7 +77,7 @@ as well; see ``twistd -h`` and ``twistd web -h`` for more information. For
 example, to run a Twisted Web server in the foreground, on port 8080, with an
 application from ``myproject``::
 
-    twistd -n web --port 8080 --wsgi myproject.app
+    twistd -n web --port tcp:8080 --wsgi myproject.app
 
 .. _Twisted: https://twistedmatrix.com/
 .. _Twisted Web: https://twistedmatrix.com/trac/wiki/TwistedWeb
